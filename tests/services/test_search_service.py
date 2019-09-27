@@ -26,7 +26,7 @@ class SearchServiceTest(TestCase):
 
     @mock.patch('services.search_service.Search')
     @mock.patch('services.search_service.diff_search_objects', return_value={'key': ['1', '2']})
-    def test_diff_searches_service_searches_exists(self, diff_search_objects, search_mock):
+    def test_diff_searches_service_searches_exists(self, diff_search_objects_mock, search_mock):
         """
         Test diff searches controller if search objects exists
         """
