@@ -49,3 +49,29 @@ class SearchControllerTest(TestCase):
         data, status_code = diff_searches_controller(url_query=url_query)
         self.assertEqual(400, status_code)
         self.assertEqual({'errors': True, 'first_search_id': False}, data)
+
+    @mock.patch('controllers.search_controller.diff_searches_service', return_value={})
+    def test_diff_searches_controller_identical_id(self, diff_searches_service):
+        """
+        Test diff searches controller if 'first_search_id' == 'second_search_id'
+        """
+        url_query: dict = {
+            'first_search_id': 2,
+            'second_search_id': 2
+        }
+        data, status_code = diff_searches_controller(url_query=url_query)
+        self.assertEqual(400, status_code)
+        self.assertEqual({'errors': True, 'identical_ids': True}, data)
+
+    @mock.patch('controllers.search_controller.diff_searches_service', return_value={})
+    def test_diff_searches_controller_string_params(self, diff_searches_service):
+        """
+        Test diff searches controller if params is not a number strings
+        """
+        url_query: dict = {
+            'first_search_id': 'first',
+            'second_search_id': 'second'
+        }
+        data, status_code = diff_searches_controller(url_query=url_query)
+        self.assertEqual(400, status_code)
+        self.assertEqual({'errors': True, 'search_id_type': True}, data)
